@@ -12,9 +12,9 @@ app.get('/api/users-last-30-days', async (req, res) => {
     try {
         const result = await pool.query(`
             SELECT DISTINCT u.userid, u.name, u.email
-            FROM Users u
-            JOIN Transactions t ON u.userid = t.userid
-            WHERE t.date > CURRENT_DATE - INTERVAL '30 days'
+            FROM users u
+            JOIN transactions t ON u.userid = t.userid
+            WHERE t.transaction_date > CURRENT_DATE - INTERVAL '30 days';
         `);
         
         if (result.rows.length === 0) {
@@ -27,6 +27,7 @@ app.get('/api/users-last-30-days', async (req, res) => {
         res.status(500).json({ message: 'Server error', error: err.message });
     }
 });
+
 
 // Identify top 3 products by purchase frequency
 app.get('/api/top-products', async (req, res) => {
